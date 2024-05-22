@@ -16,7 +16,9 @@ Vue.component('mescroll-uni', MescrollUni);
 
 // 注册缓存器
 Vue.use(MinCache,{timeout: 6})
-
+// main.js
+import uView from "uview-ui";
+Vue.use(uView);
 // store
 Vue.prototype.$store=store;
 // tip
