@@ -18,7 +18,8 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "condition": true
   },
   "condition": {},
   "editorSetting": {
@@ -26,5 +27,9 @@
     "tabSize": 2
   },
   "miniprogramRoot": "unpackage/dist/dev/mp-weixin/",
-  "srcMiniprogramRoot": "unpackage/dist/dev/mp-weixin/"
+  "srcMiniprogramRoot": "unpackage/dist/dev/mp-weixin/",
+  "projectArchitecture": "multiPlatform",
+  "simulatorPluginLibVersion": {
+    "wxext14566970e7e9f62": "3.0.2-8"
+  }
 }
