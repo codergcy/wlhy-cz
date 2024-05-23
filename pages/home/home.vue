@@ -57,27 +57,8 @@
 		props:{
 			cur:String,
 		},
-		watch: {
-			cur: {
-				immediate: true,
-				handler:function(val,oldVal){
-					console.log('cur',val,oldVal)
-				    this.initMenu()
-				},
-			},
-		},
 		data() {
 			return {
-			 swiperList: [
-				  {id:1,type: 'image',url: '/static/banner/banner1.png', link: ''},
-				  {id:2,type: 'image',url: '/static/banner/banner2.jpg', link: ''},
-				  {id:3,type: 'image',url: '/static/banner/banner3.jpg', link: ''},
-				  {id:4,type: 'image',url: '/static/banner/banner4.jpg', link: ''},
-				],
-				middleApps: [
-				  {icon: 'line2_icon1.png', title: '审批', 'text': '个人审批'},
-				  {icon: 'line2_icon2.png', title: '审批稿', 'text': '审批草稿箱'},
-				],
 				usList:us.data,
 				osList:os.data,
 				msgCount:0,
@@ -87,12 +68,6 @@
 			}
 		},
 		methods: {
-			initMenu(){
-				console.log("-----------home------------")
-			    this.onSocketOpen()
-			    this.onSocketReceive()
-			    this.loadCount(0);
-			},
 			goPage(page){
 				if(!page){
 					return false;
@@ -102,39 +77,6 @@
 				}
 				this.dot[page]=false
 				this.$Router.push({name: page})
-			},
-			// 启动webSocket
-			onSocketOpen() {
-				socket.init('websocket');
-			},
-			onSocketReceive() {
-				var _this=this
-				socket.acceptMessage = function(res){
-					// console.log("页面收到的消息", res);
-					if(res.cmd == "topic"){
-					  //系统通知
-					  _this.loadCount('1')
-					}else if(res.cmd == "user"){
-					  //用户消息
-					  _this.loadCount('2')
-					} else if(res.cmd == 'email'){
-					 //邮件消息
-					  _this.loadEmailCount()
-					}
-				}
-			},
-			loadCount(flag){
-				console.log("loadCount::flag",flag)
-				let url = '/sys/annountCement/listByUser';
-				this.$http.get(url).then(res=>{
-					console.log("res::",res)
-				  if(res.data.success){
-					let msg1Count = res.data.result.anntMsgTotal;
-					let msg2Count = res.data.result.sysMsgTotal;
-					this.msgCount = msg1Count + msg2Count
-					console.log("this.msgCount",this.msgCount)
-				  }
-				})
 			},
 			loadEmailCount(){
 				this.dot.mailHome = true
