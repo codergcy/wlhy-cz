@@ -12,7 +12,7 @@
     <!-- 承运人 搜索框 -->
     <view style="background-color: #fff">
       <u-search
-        @search="onSearch"
+        @search="goSearch"
         @custom="setPouple"
         clearabled
         borderColor="#fff"
@@ -169,17 +169,19 @@
           >
           </u-cell-item
         ></u-form-item>
-        <u-form-item label-width="150" label="承运人姓名"
-          ><u-input
-        /></u-form-item>
-        <u-form-item label-width="120" label="手机号"><u-input /></u-form-item>
-        <u-form-item label-width="150" label="身份证号码"
-          ><u-input
-        /></u-form-item>
+        <u-form-item label-width="150" label="承运人姓名">
+          <u-input v-model="formData.driverName" />
+        </u-form-item>
+        <u-form-item label-width="120" label="手机号">
+          <u-input v-model="formData.phone" />
+        </u-form-item>
+        <u-form-item label-width="150" label="身份证号码">
+          <u-input v-model="formData.identificationNumber" />
+        </u-form-item>
       </u-form>
       <view class="confrim-btn">
-        <u-button @click="onSearch" type="primary">查询</u-button>
-        <u-button @click="onReset" >重置</u-button>
+        <u-button type="primary" @click="onSearch">确定</u-button>
+        <u-button type="primary" @click="onReset">重置</u-button>
       </view>
     </u-popup>
   </view>
@@ -244,8 +246,12 @@ export default {
         phone: "", // 手机号
         identificationNumber: "", // 身份证号
         isDriver: "", // 是否是驾驶员
+        attestationStatus: "", //实名认证状态
+        auditStatus:'',//司机认证状态
       };
       this.driverLabel = "全部";
+      this.attestationStatusLabel = "全部";
+      this.auditStatusLabel = "全部";
       this.isPouple = false;
       this.getData(true, "重置成功");
     },
@@ -289,11 +295,14 @@ export default {
       const params = {
         pageSize: this.pageSize,
         pageNo: this.pageNo,
-        isDriverQueryParam: this.formData.isDriver,
+        isDriverQueryParam: 0,
         typeInfo: 3,
         driverName: this.formData.driverName,
         phone: this.formData.phone,
+        isDriver:this.formData.isDriver,
         identificationNumber: this.formData.identificationNumber,
+        attestationStatus: this.formData.attestationStatus,
+        auditStatus: this.formData.auditStatus,
       };
       this.$http
         .get("ntocc/tmsDriver/queryListPC", { params })
@@ -367,20 +376,19 @@ export default {
     /**
      * @onDriverChange 切换是否司机
      * @param {Number} selectedIndex  选择数据下标
-     * @param {String} driverLabel 显示当前选择label
-     * @param {String||Number} isDriver 选择的值
      */
     onDriverChange(e) {
       const selectedIndex = e[0];
       this.formData.isDriver = this.driverData[selectedIndex].value;
+      console.log('====================================');
+      console.log( this.formData.isDriver,' this.formData.isDriver');
+      console.log('====================================');
       this.driverLabel = this.driverData[selectedIndex].label;
       this.isDriverPicker = false;
     },
     /**
      * @onAttestationStatusChange 切换实名认证状态
      * @param {Number} selectedIndex  选择数据下标
-     * @param {String} attestationStatusLabel 显示当前选择label
-     * @param {String||Number} isDriver 选择的值
      */
     onAttestationStatusChange(e) {
       const selectedIndex = e[0];
@@ -393,10 +401,8 @@ export default {
     /**
      * @onAuditStatusChange 切换司机认证状态
      * @param {Number} selectedIndex  选择数据下标
-     * @param {String} auditStatusLabel 显示当前选择label
-     * @param {String||Number} isDriver 选择的值
      */
-     onAuditStatusChange(e) {
+    onAuditStatusChange(e) {
       const selectedIndex = e[0];
       this.formData.auditStatus = this.auditStatusData[selectedIndex].value;
       this.auditStatusLabel = this.auditStatusData[selectedIndex].label;
@@ -454,6 +460,13 @@ export default {
   position: absolute;
   width: 100%;
 }
+
+.confrim-btn {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
 .buttons-box {
   margin-top: 20rpx;
   display: flex;
