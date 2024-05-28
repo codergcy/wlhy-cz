@@ -1,23 +1,16 @@
 <template name="home">
 	<view>
+		<u-navbar :is-back="false" title="首页" >
+		</u-navbar>
 		<scroll-view>
-			<!-- 轮播 -->
-			<swiper class="screen-swiper square-dot"  :indicator-dots="true" :circular="true"
-			 :autoplay="true" interval="5000" duration="500" :style="[{animation: 'show 0.2s 1'}]">
-				<swiper-item v-for="(item,index) in swiperList" :key="index">
-					<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
-					<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
-				</swiper-item>
-			</swiper>
-			
-			<!-- 常用服务 -->
+			<!-- 会员中心 -->
 			<view class="cu-bar bg-white solid-bottom" :style="[{animation: 'show 0.5s 1'}]">
 				<view class="action">
-					<text class='cuIcon-title text-blue'></text>常用服务
+					<text class='cuIcon-title text-blue'></text>会员中心
 				</view>
 			</view>
 				
-			<view class="cu-list grid col-4 text-sm">
+			<view class="cu-list grid col-2 text-sm">
 				<view class="cu-item animation-slide-bottom" :style="[{animationDelay: (index + 1)*0.05 + 's'}]" v-for="(item,index) in usList" :key="index" @tap="goPage(item.page)">
 					<view class="padding text-center">
 						<image :src="item.icon" style="width:28px;height:28px;">
@@ -30,13 +23,13 @@
 				</view>
 			</view>
 				
-			<!-- 其他服务 -->
+			<!-- 运力中心 -->
 			<view class="cu-bar bg-white solid-bottom margin-top"  :style="[{animation: 'show 0.6s 1'}]">
 				<view class="action">
-					 <text class='cuIcon-title text-yellow'></text>其他服务
+					 <text class='cuIcon-title text-yellow'></text>运力中心
 				</view>
 			</view>
-			<view class="cu-list grid col-4 text-sm">
+			<view class="cu-list grid col-2 text-sm">
 				<view class="cu-item animation-slide-bottom" :style="[{animationDelay: (index + 1)*0.1 + 's'}]" v-for="(item,index) in osList" :key="index" @tap="goPage(item.page)">
 					<view class="padding text-center">
 						<image :src="item.icon" style="width:28px;height:28px;"/>
@@ -51,7 +44,6 @@
 
 <script>
 	import { us,os } from '@/common/util/work.js'
-	import socket from '@/common/js-sdk/socket/socket.js'
 	export default {
 		name: 'home',
 		props:{

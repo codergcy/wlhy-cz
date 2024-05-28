@@ -3,6 +3,10 @@
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [
+		{
+			"path": "pages/home/home",
+			"style": {}
+		},
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/login/login",
@@ -111,9 +115,6 @@
 			"path": "pages/plugin/verticalnav",
 			"style": {}
 		}, {
-			"path": "pages/home/home",
-			"style": {}
-		}, {
 			"path": "pages/user/userexit",
 			"style": {}
 		}, {
@@ -165,8 +166,23 @@
 		},{
 			"path": "pages/common/helloWorld",
 			"style": {}
+		},
+		{
+			"path" : "pages/carrier/carrier",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/carrier/carrierEdit",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
-		
 	],
 	"globalStyle": {
 		"mp-alipay": {
