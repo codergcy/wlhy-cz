@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import {ACCESS_TOKEN} from '@/common/util/constants.js'
 	export default {
 		data() {
 		return {
@@ -26,6 +27,16 @@
 			this.PageCur='home'
 			++this.commponent1Key
 			++this.commponent2Key
+			let token = uni.getStorageSync(ACCESS_TOKEN);
+		if (!token) {
+			uni.showToast({
+				title: '请重新登录',
+				duration: 2000
+			});
+			this.$Router.replaceAll({
+						name: 'login'
+					})
+		}
 		},
 		methods: {
 			NavChange: function(e) {
