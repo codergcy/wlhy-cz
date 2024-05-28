@@ -9,21 +9,6 @@
       border="true"
     >
     </u-navbar>
-    <!-- 承运人 搜索框 -->
-    <view style="background-color: #fff">
-      <u-search
-        @search="goSearch"
-        @custom="setPouple"
-        clearabled
-        borderColor="#fff"
-        style="margin: 5px 0"
-        placeholder="请输入手机号"
-        bgColor="#fff"
-        v-model="formData.phone"
-        actionText="筛选"
-      >
-      </u-search>
-    </view>
     <!-- 滚动视图 包含下拉刷新功能 -->
     <scroll-view
       scroll-y
@@ -37,6 +22,21 @@
       @refresherrefresh="refresh"
       style="height: calc(100vh - 100px)"
     >
+      <!-- 承运人 搜索框 -->
+      <view style="background-color: #fff">
+        <u-search
+          @search="goSearch"
+          @custom="setPouple"
+          clearabled
+          borderColor="#fff"
+          style="margin: 5px 0"
+          placeholder="请输入手机号"
+          bgColor="#fff"
+          v-model="formData.phone"
+          actionText="筛选"
+        >
+        </u-search>
+      </view>
       <!-- 适当调整100px以匹配搜索框和导航栏的总高度 -->
       <!-- 承运人 卡片 -->
       <view v-for="(item, index) in dataList" :key="item.id">
@@ -125,7 +125,7 @@
       <view v-if="loadingMore" class="loading">加载中...</view>
       <view v-if="!hasMoreData" class="loading">没有更多数据</view>
     </scroll-view>
-    <u-popup mode="bottom" v-model="isPouple" @close="isPouple = false">
+    <u-popup mode="bottom" v-model="isPouple" @close="closePouple">
       <u-form :model="formData" ref="uForm">
         <u-form-item label-width="150" label="是否驾驶员">
           <u-picker
@@ -163,10 +163,7 @@
             :default-selector="[0]"
             :range="auditStatusData"
           ></u-picker>
-          <u-cell-item
-            :title="auditStatusLabel"
-            @click="isauditStatus = true"
-          >
+          <u-cell-item :title="auditStatusLabel" @click="isauditStatus = true">
           </u-cell-item
         ></u-form-item>
         <u-form-item label-width="150" label="承运人姓名">
@@ -181,7 +178,8 @@
       </u-form>
       <view class="confrim-btn">
         <u-button type="primary" @click="onSearch">确定</u-button>
-        <u-button type="primary" @click="onReset">重置</u-button>
+        <view style="height: 10px"></view>
+        <u-button @click="onReset">重置</u-button>
       </view>
     </u-popup>
   </view>
@@ -214,7 +212,7 @@ export default {
         identificationNumber: "", // 身份证号
         isDriver: "", // 是否是驾驶员
         attestationStatus: "", //实名认证状态
-        auditStatus:'',//司机认证状态
+        auditStatus: "", //司机认证状态
       }, // 查询条件
       driverData: driverList.data, //是否是司机数据
       attestationStatusData: attestationStatusList.data, //实名认证状态数据
@@ -227,6 +225,12 @@ export default {
   },
   mounted() {
     this.initList();
+    // 监听返回事件
+    uni.$on("backFromDriverManagement", (data) => {
+      if (data.updated) {
+        this.initList(); // 重新获取数据
+      }
+    });
   },
   methods: {
     /**
@@ -247,7 +251,7 @@ export default {
         identificationNumber: "", // 身份证号
         isDriver: "", // 是否是驾驶员
         attestationStatus: "", //实名认证状态
-        auditStatus:'',//司机认证状态
+        auditStatus: "", //司机认证状态
       };
       this.driverLabel = "全部";
       this.attestationStatusLabel = "全部";
@@ -261,6 +265,16 @@ export default {
      */
     setPouple() {
       this.isPouple = true;
+    },
+    /**
+     * @closePouple 关闭显示筛选框
+     * @param {boolean} isPouple 是否显示
+     */
+    closePouple() {
+      this.isPouple = false;
+      this.isDriverPicker = false;
+      this.isAttestationStatus = false;
+      this.isauditStatus = false;
     },
     /**
      * @clickGoBack 返回上一级页面
@@ -299,7 +313,7 @@ export default {
         typeInfo: 3,
         driverName: this.formData.driverName,
         phone: this.formData.phone,
-        isDriver:this.formData.isDriver,
+        isDriver: this.formData.isDriver,
         identificationNumber: this.formData.identificationNumber,
         attestationStatus: this.formData.attestationStatus,
         auditStatus: this.formData.auditStatus,
@@ -380,9 +394,6 @@ export default {
     onDriverChange(e) {
       const selectedIndex = e[0];
       this.formData.isDriver = this.driverData[selectedIndex].value;
-      console.log('====================================');
-      console.log( this.formData.isDriver,' this.formData.isDriver');
-      console.log('====================================');
       this.driverLabel = this.driverData[selectedIndex].label;
       this.isDriverPicker = false;
     },
@@ -462,9 +473,10 @@ export default {
 }
 
 .confrim-btn {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
+  // display: flex;
+  // justify-content: space-around;
+  margin: 10px;
+  // padding: 10px;
 }
 
 .buttons-box {
