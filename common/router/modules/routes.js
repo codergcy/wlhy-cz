@@ -38,6 +38,34 @@ const routes = [
 	    },
 	},
 	{
+		path: "/pages/carrier/carrier",
+		name: 'carrier',
+		meta: {
+			title: '承运人管理',
+		},
+	},
+	{
+		path: "/pages/carrier/carrierEdit",
+		name: 'carrierEdit',
+		meta: {
+			title: '承运人管理审核',
+		},
+	},
+	{
+		path: "/pages/driver/driver",
+		name: 'driver',
+		meta: {
+			title: '司机管理',
+		},
+	},
+	{
+		path: "/pages/driver/driverEdit",
+		name: 'driverEdit',
+		meta: {
+			title: '司机管理审核编辑',
+		},
+	},
+	{
 	    path: '/pages/user/userdetail',
 	    name: 'userdetail',
 	    meta: {

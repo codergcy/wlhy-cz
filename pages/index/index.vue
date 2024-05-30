@@ -4,10 +4,10 @@
 		<people v-if="PageCur=='people'" :key="commponent2Key"></people>
 		<view class="cu-bar tabbar bg-white shadow foot">
 			<view :class="PageCur=='home'?'action text-green':'action text-gray'" @click="NavChange" data-cur="home">
-				<view class='cuIcon-homefill'></view>主页
+				<view class='cuIcon-homefill'></view>首页
 			</view>
 			<view :class="PageCur=='people'?'action text-green':'action text-gray'" @click="NavChange" data-cur="people">
-				<view class='cuIcon-people'></view>个人
+				<view class='cuIcon-people'></view>我的
 			</view>
 		</view>
 	</view>
@@ -42,7 +42,6 @@ import {ACCESS_TOKEN} from '@/common/util/constants.js'
 			NavChange: function(e) {
 				this.PageCur = e.currentTarget.dataset.cur
 			}
-			
 		}
 	}
 </script>

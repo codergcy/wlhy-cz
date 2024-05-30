@@ -1,7 +1,7 @@
-<template name="承运人管理审核编辑页面">
+<template name="司机管理审核编辑页面">
   <view>
     <scroll-view class="page">
-      <!-- 承运人审核编辑 顶部 导航栏 -->
+      <!-- 司机审核编辑 顶部 导航栏 -->
       <u-navbar
         :title="title"
         @leftClick="clickGoBack"
@@ -156,17 +156,7 @@
         <u-card :show-head="false">
           <view slot="body">
             <text>2.司机认证信息</text>
-            <view class="uni-title">是否是驾驶员:</view>
-            <u-radio-group v-model="formEdit.isDriver">
-              <u-radio
-                v-for="(item, index) in isDriverData"
-                :key="index"
-                :name="item.value"
-              >
-                {{ item.label }}
-              </u-radio>
-            </u-radio-group>
-            <view v-show="formEdit.isDriver == 1">
+            <view >
               <view class="upload-container">
                 <view class="upload-box">
                   <u-upload
@@ -352,7 +342,7 @@
           </view>
         </u-card>
          <!-- 审核结果 -->
-      <u-card :show-head="false" v-if="title == '承运人管理审核'">
+      <u-card :show-head="false" v-if="title == '司机管理审核'">
         <view slot="body">
           <view>
             <text>3.审核结果</text>
@@ -386,13 +376,13 @@
         <view class="button-container">
           <u-button
             @click="onSubmit"
-            v-if="title == '承运人管理审核'"
+            v-if="title == '司机管理审核'"
             size="medium"
             >确认</u-button
           >
           <u-button
             @click="onSubmitOK"
-            v-if="title == '承运人管理编辑'"
+            v-if="title == '司机管理编辑'"
             size="medium"
             >保存</u-button
           >
@@ -414,7 +404,7 @@ import {
 export default {
   data() {
     return {
-      title: "承运人管理编辑",
+      title: "司机管理编辑",
       areaCode: ["11", "1101", "110100"], //设置打开下拉身份证所在地区默认值
       areaName: "", //显示身份证所在地区
       isDisabled: false, //是否可以修改
@@ -510,10 +500,10 @@ export default {
       //todo 用于判断标题
       if (this.$store.state.status == "examine") {
         this.isDisabled = false;
-        this.title = "承运人管理审核";
+        this.title = "司机管理审核";
       } else {
         this.isDisabled = true;
-        this.title = "承运人管理编辑";
+        this.title = "司机管理编辑";
       }
       //todo 用于上传头像
       const token = this.$store.state.token;

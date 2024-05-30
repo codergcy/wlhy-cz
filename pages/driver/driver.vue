@@ -1,8 +1,8 @@
-<template name="承运人管理页面">
+<template name="司机管理页面">
   <view>
-    <!-- 承运人 顶部 导航栏 -->
+    <!-- 司机 顶部 导航栏 -->
     <u-navbar
-      title="承运人管理"
+      title="司机管理"
       @leftClick="clickGoBack"
       :autoBack="true"
       placeholder
@@ -22,7 +22,7 @@
       @refresherrefresh="refresh"
       style="height: calc(100vh - 100px)"
     >
-      <!-- 承运人 搜索框 -->
+      <!-- 司机 搜索框 -->
       <view style="background-color: #fff">
         <u-search
           @search="goSearch"
@@ -38,7 +38,7 @@
         </u-search>
       </view>
       <!-- 适当调整100px以匹配搜索框和导航栏的总高度 -->
-      <!-- 承运人 卡片 -->
+      <!-- 司机 卡片 -->
       <view v-for="(item, index) in dataList" :key="item.id">
         <u-card :show-head="false">
           <view class="card-list" slot="body">
@@ -46,11 +46,6 @@
               <view class="info">
                 <text class="label">{{ item.driverName }}:</text>
                 <text class="value">{{ item.phone }}</text>
-              </view>
-              <view class="info">
-                <text class="label">是否为驾驶员：</text>
-                <text class="value" v-if="item.isDriver == 1">是</text>
-                <text class="value" v-if="item.isDriver == 0">否</text>
               </view>
               <view class="info">
                 <text class="label">实名认证：</text>
@@ -83,11 +78,11 @@
                   >认证失败</text
                 >
                 <text
-                  v-else
+                  v-else="item.auditStatus == 1"
                   mode="light"
-                  style="color: red"
+                  style="color: chocolate"
                   class="value status"
-                  >未认证</text
+                  >等待审核</text
                 >
               </view>
               <view class="info">
@@ -114,7 +109,7 @@
                   v-else
                   style="color: red"
                   class="value status"
-                  >正在审核</text
+                  >等待审核</text
                 >
               </view>
             </view>
@@ -140,18 +135,6 @@
     </scroll-view>
     <u-popup mode="bottom" v-model="isPouple" @close="closePouple">
       <u-form :model="formData" ref="uForm">
-        <u-form-item label-width="150" label="是否驾驶员">
-          <u-picker
-            mode="selector"
-            @confirm="onDriverChange"
-            v-model="isDriverPicker"
-            range-key="label"
-            :default-selector="[0]"
-            :range="driverData"
-          ></u-picker>
-          <u-cell-item :title="driverLabel" @click="isDriverPicker = true">
-          </u-cell-item>
-        </u-form-item>
         <u-form-item label-width="180" label="实名认证状态">
           <u-picker
             mode="selector"
@@ -323,10 +306,9 @@ export default {
         pageSize: this.pageSize,
         pageNo: this.pageNo,
         isDriverQueryParam: 0,
-        typeInfo: 3,
+        typeInfo: 4,
         driverName: this.formData.driverName,
         phone: this.formData.phone,
-        isDriver: this.formData.isDriver,
         identificationNumber: this.formData.identificationNumber,
         attestationStatus: this.formData.attestationStatus,
         auditStatus: this.formData.auditStatus,
@@ -398,7 +380,7 @@ export default {
     goEdit(item, status) {
       this.$store.dispatch("setCurrentItem", item);
       this.$store.dispatch("setDisabled", status);
-      this.$Router.push({ name: "carrierEdit" });
+      this.$Router.push({ name: "driverEdit" });
     },
     /**
      * @onDriverChange 切换是否司机
